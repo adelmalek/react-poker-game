@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react-poker-game/static/css/main.7d584735.css",
+    "main.js": "/react-poker-game/static/js/main.67f95bda.js",
+    "static/js/787.a904b9e1.chunk.js": "/react-poker-game/static/js/787.a904b9e1.chunk.js",
+    "index.html": "/react-poker-game/index.html",
+    "main.7d584735.css.map": "/react-poker-game/static/css/main.7d584735.css.map",
+    "main.67f95bda.js.map": "/react-poker-game/static/js/main.67f95bda.js.map",
+    "787.a904b9e1.chunk.js.map": "/react-poker-game/static/js/787.a904b9e1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7d584735.css",
+    "static/js/main.67f95bda.js"
+  ]
+}
