@@ -1,6 +1,9 @@
 .App {
-  text-align: center;
   color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .newgame-btn {
@@ -25,7 +28,7 @@
   min-height: 64px;
   outline: none;
   overflow: visible;
-  padding: 19px 26px;
+  padding: 12px 19px;
   pointer-events: auto;
   position: relative;
   text-align: center;
