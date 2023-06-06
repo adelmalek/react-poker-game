@@ -11,7 +11,6 @@ function App() {
   const [playerChips, setPlayerChips] = useState(100);
   const [computerChips, setComputerChips] = useState(100);
   const [pot, setPot] = useState(0);
-  const [sliderValue, setSliderValue] = useState(50);
 
   const API_KEY = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1";
   const DRAW_CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
@@ -27,23 +26,49 @@ function App() {
     shuffleCards()
   }, []);
 
+  const postBlinds = () => {
+    if (deckId === null) return;
+    setIsGame(true);
+    setPlayerChips(playerChips - 1);
+    setComputerChips(computerChips - 2);
+    setPot(pot + 3);
+    fetch(DRAW_CARDS)
+      .then(res => res.json())
+      .then(datas => setCards(datas.cards))
+      .catch(error => console.log(error));
+  };
+
   const drawCards = () => {
     if (deckId === null) return;
     setIsGame(true);
     fetch(DRAW_CARDS)
       .then(res => res.json())
       .then(datas => setCards(datas.cards))
-      .catch(error => console.log(error))
+      .catch(error => console.log(error));
+    setPlayerChips(100);
+    setComputerChips(100);
+    setPot(0);
   };
 
   return (
     <div className="App">
       <h1>P&#9824;ker</h1>
-      <button className="newgame-btn" onClick={() => drawCards()}>New Game</button>
+      <button className="newgame-btn" onClick={() => postBlinds()}>New Game</button>
       {cards.length === 2 && playerChips > 0 && pot === 0 ? (
-        <Slider sliderValue={sliderValue} setSliderValue={setSliderValue}/>
+        <Slider
+          playerChips={playerChips} 
+          setPlayerChips={setPlayerChips}
+          pot={pot}
+          setPot={setPot}
+        />
       ) : ""}
-      <Cards cards={cards} isGame={isGame} playerChips={playerChips} computerChips={computerChips} pot={pot}/>
+      <Cards 
+        cards={cards} 
+        isGame={isGame} 
+        playerChips={playerChips} 
+        computerChips={computerChips} 
+        pot={pot}
+      />
     </div>
   );
 };
