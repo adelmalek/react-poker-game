@@ -1,0 +1,15 @@
+.cards-component-container {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chips-counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cards-container {
+    display: flex;
+}

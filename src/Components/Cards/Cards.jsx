@@ -1,3 +1,5 @@
+import "./Cards.css";
+
 const Cards = ({
     cards,
     isGame,
@@ -6,7 +8,12 @@ const Cards = ({
     pot
 }) => {
     return (
-        <>
+        <div className="cards-component-container">
+            <div className="chips-counter">
+                <div>{isGame && `Player: ${playerChips}`}</div>
+                <div>{isGame && `Computer: ${computerChips}`}</div>
+                <div>{isGame && `Pot: ${pot}`}</div>
+            </div>
             <div className="cards-container">
                 {cards.map(card => 
                 <div key={card.code}>
@@ -14,14 +21,7 @@ const Cards = ({
                 </div>
                 )}
             </div>
-            <div className="chips-counter">
-                <div>{isGame && `Player: ${playerChips}`}</div>
-                <div>{isGame && `Computer: ${computerChips}`}</div>
-            </div>
-            <div className="pot-container">
-                <div>{isGame && `Pot: ${pot}`}</div>
-            </div>
-        </>
+        </div>
     )
 };
 
