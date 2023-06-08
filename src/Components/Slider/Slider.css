@@ -1,12 +1,12 @@
-.bet-container {
-    width: 50%;
-    margin: 40px 0;
+.not-visible {
+  visibility: hidden;
 }
 
 .slide-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 10px;
 }
 
 .slider {

@@ -3,13 +3,12 @@ import { useState, useEffect } from "react";
 
 import Slider from "./Components/Slider/Slider";
 import Cards from "./Components/Cards/Cards";
-import ComputerCards from "./Components/ComputerCards/ComputerCards";
 
 function App() {
   const [deckId, setDeckId] = useState(null);
-  const [cards, setCards] = useState([]);
-  const [computerCards, setComputerCards] = useState([]);
   const [isGame, setIsGame] = useState(false);
+  const [playerCards, setPlayerCards] = useState([]);
+  const [computerCards, setComputerCards] = useState([]);
   const [playerChips, setPlayerChips] = useState(100);
   const [computerChips, setComputerChips] = useState(100);
   const [pot, setPot] = useState(0);
@@ -18,32 +17,43 @@ function App() {
   const API_KEY = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1";
   const DRAW_CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
 
-  const shuffleCards = () => {
+  useEffect(() => {
+    shuffleCards()
+  }, []);
+
+  function shuffleCards() {
     fetch(API_KEY)
       .then(res => res.json())
       .then(datas => setDeckId(datas.deck_id))
       .catch(error => console.log(error))
   };
 
-  useEffect(() => {
-    shuffleCards()
-  }, []);
-
-  const postBlinds = () => {
+  function postBlinds() {
     if (deckId === null) return;
-    setIsGame(true);
     fetch(DRAW_CARDS)
       .then(res => res.json())
-      .then(datas => setCards(datas.cards))
+      .then(datas => setPlayerCards(datas.cards))
       .catch(error => console.log(error));
+    setIsGame(true);
     setPlayerChips(99);
     setComputerChips(98);
     setPot(3);
     setPlayerBetPlaced(false);
+    computerCardsAfterBet();
   };
 
-  const computerShouldCall = () => {
-    if (computerCards.length !== 2) return;
+  function computerCardsAfterBet() {
+    if (deckId === null) return;
+    fetch(DRAW_CARDS)
+      .then(res => res.json())
+      .then(datas => setComputerCards(datas.cards))
+      .catch(error => console.log(error));
+  };
+
+  /* alert(computerShouldCall() ? "Call" : "Fold"); */
+
+  function computerShouldCall() {
+    if (computerCards.length !== 2) return false;
 
     const card1Value = computerCards[0].code[0];
     const card2Value = computerCards[1].code[0];
@@ -59,42 +69,31 @@ function App() {
            );
   };
 
-  const computerCardsAfterBet = () => {
-    if (deckId === null) return;
-    setIsGame(true);
-    fetch(DRAW_CARDS)
-      .then(res => res.json())
-      .then(datas => {
-        setComputerCards(datas.cards)
-        computerShouldCall();
-      })
-      .catch(error => console.log(error));
-    alert(computerShouldCall? "Call" : "Fold");
-    console.log(computerCards)
-  };
-
   return (
     <div className="App">
       <h1>P&#9824;ker</h1>
       <button className="newgame-btn" onClick={() => postBlinds()}>New Game</button>
-      {cards.length === 2 && playerChips > 0 && playerBetPlaced === false? (
-        <Slider
-          playerChips={playerChips} 
-          setPlayerChips={setPlayerChips}
-          pot={pot}
-          setPot={setPot}
-          computerCardsAfterBet={computerCardsAfterBet}
-          setPlayerBetPlaced={setPlayerBetPlaced}
-        />
-      ) : ""}
-      <Cards 
-        cards={cards} 
-        isGame={isGame} 
+      <div className="slider-container">
+        {playerCards.length === 2 && playerChips > 0 && playerBetPlaced === false ? (
+          <Slider
+            playerChips={playerChips} 
+            setPlayerChips={setPlayerChips}
+            pot={pot}
+            setPot={setPot}
+            setPlayerBetPlaced={setPlayerBetPlaced}
+            computerShouldCall={computerShouldCall}
+          />
+        ) : ""}
+      </div>
+      <Cards
+        isGame={isGame}
+        playerCards={playerCards}
         playerChips={playerChips} 
         computerChips={computerChips} 
         pot={pot}
+        computerCards={computerCards}
+        playerBetPlaced={playerBetPlaced}
       />
-      <ComputerCards computerCards={computerCards}/>
     </div>
   );
 };

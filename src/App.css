@@ -2,8 +2,13 @@
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
+
+.slider-container {
+  width: 50%;
+  height: 150px;
+  margin: 40px 0;
 }
 
 .newgame-btn {

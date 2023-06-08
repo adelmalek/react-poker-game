@@ -5,19 +5,19 @@ const Slider = ({
     playerChips, 
     setPlayerChips, 
     pot, 
-    setPot, 
-    computerCardsAfterBet,
-    setPlayerBetPlaced
+    setPot,
+    setPlayerBetPlaced,
+    computerShouldCall
 }) => {
     const [sliderValue, setSliderValue] = useState(50);
     const [max, setMax] = useState(99);
 
-    const handleBetClick = () => {
+    function handleBetClick() {
         setPlayerChips(playerChips - sliderValue);
         setPot(pot + sliderValue);
         setMax(max - sliderValue);
         setPlayerBetPlaced(true);
-        computerCardsAfterBet();
+        alert(computerShouldCall() ? "Call": "Fold");
     };
 
     return (
@@ -30,7 +30,7 @@ const Slider = ({
                     className="slider"
                     onChange={(e) => setSliderValue(e.target.valueAsNumber)} 
                 />
-                <p>Value: <span id="demo">{sliderValue}</span></p>
+                <p>Value: {sliderValue}</p>
                 <button className="bet-btn" onClick={handleBetClick}>Bet</button>
             </div>
       </div>

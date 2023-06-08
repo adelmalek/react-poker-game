@@ -1,15 +1,36 @@
+.not-visible {
+    visibility: hidden;
+}
+
 .cards-component-container {
-    width: 50%;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.pot-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.cards {
     display: flex;
     justify-content: space-between;
 }
 
-.chips-counter {
+.player-cards-container,
+.computer-cards-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    margin: 0 60px;
+    width: 452px;
 }
 
-.cards-container {
+.player-cards,
+.computer-cards {
     display: flex;
 }
+
+
+

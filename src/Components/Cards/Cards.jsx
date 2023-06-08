@@ -1,25 +1,38 @@
 import "./Cards.css";
 
+import ComputerCards from "../ComputerCards/ComputerCards";
+
 const Cards = ({
-    cards,
     isGame,
+    playerCards,
     playerChips,
     computerChips,
-    pot
+    pot,
+    computerCards,
+    playerBetPlaced
 }) => {
     return (
-        <div className="cards-component-container">
-            <div className="chips-counter">
-                <div>{isGame && `Player: ${playerChips}`}</div>
-                <div>{isGame && `Computer: ${computerChips}`}</div>
-                <div>{isGame && `Pot: ${pot}`}</div>
+        <div className={isGame? "cards-component-container" : "not-visible"}>
+            <div className="pot-container">
+                <div>{`Pot: ${pot}`}</div>
             </div>
-            <div className="cards-container">
-                {cards.map(card => 
-                <div key={card.code}>
-                    <img src={card.image} alt={card.code}/>
+            <div className="cards">
+                <div className="player-cards-container">
+                    <div>{`Player Chips: ${playerChips}`}</div>
+                    <div className="player-cards">
+                        {playerCards.map(card => 
+                        <div key={card.code}>
+                            <img src={card.image} alt={card.code}/>
+                        </div>
+                        )}
+                    </div>
                 </div>
-                )}
+                <div className={playerBetPlaced? "computer-cards-container" : "not-visible"}>
+                    <div>{`Computer Chips: ${computerChips}`}</div>
+                    <div className="computer-cards">
+                        <ComputerCards computerCards={computerCards}/>
+                    </div>
+                </div>
             </div>
         </div>
     )
