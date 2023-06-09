@@ -9,7 +9,9 @@ const Cards = ({
     computerChips,
     pot,
     computerCards,
-    playerBetPlaced
+    playerBetPlaced,
+    computerShouldCall,
+    setComputerChips
 }) => {
     return (
         <div className={isGame? "cards-component-container" : "not-visible"}>
@@ -30,7 +32,7 @@ const Cards = ({
                 <div className={playerBetPlaced? "computer-cards-container" : "not-visible"}>
                     <div>{`Computer Chips: ${computerChips}`}</div>
                     <div className="computer-cards">
-                        <ComputerCards computerCards={computerCards}/>
+                       <ComputerCards computerCards={computerCards} computerShouldCall={computerShouldCall}/>
                     </div>
                 </div>
             </div>

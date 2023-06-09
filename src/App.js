@@ -50,8 +50,6 @@ function App() {
       .catch(error => console.log(error));
   };
 
-  /* alert(computerShouldCall() ? "Call" : "Fold"); */
-
   function computerShouldCall() {
     if (computerCards.length !== 2) return false;
 
@@ -69,6 +67,11 @@ function App() {
            );
   };
 
+  function computerChipsAfterCall(value) {
+    setComputerChips(computerChips - value);
+    setPot(pot => pot + value);
+  };
+
   return (
     <div className="App">
       <h1>P&#9824;ker</h1>
@@ -82,6 +85,8 @@ function App() {
             setPot={setPot}
             setPlayerBetPlaced={setPlayerBetPlaced}
             computerShouldCall={computerShouldCall}
+            setComputerChips={setComputerChips}
+            computerChipsAfterCall={computerChipsAfterCall}
           />
         ) : ""}
       </div>
@@ -93,6 +98,7 @@ function App() {
         pot={pot}
         computerCards={computerCards}
         playerBetPlaced={playerBetPlaced}
+        computerShouldCall={computerShouldCall}
       />
     </div>
   );
