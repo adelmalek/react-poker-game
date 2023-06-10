@@ -68,8 +68,13 @@ function App() {
   };
 
   function computerChipsAfterCall(value) {
-    setComputerChips(computerChips - value);
+    value === 99 ? setComputerChips(0) : setComputerChips(computerChips - value);
     setPot(pot => pot + value);
+  };
+
+  function computerChipsAfterFold(value) {
+    setPlayerChips(playerChips + pot + value);
+    setPot(0)
   };
 
   return (
@@ -87,6 +92,7 @@ function App() {
             computerShouldCall={computerShouldCall}
             setComputerChips={setComputerChips}
             computerChipsAfterCall={computerChipsAfterCall}
+            computerChipsAfterFold={computerChipsAfterFold}
           />
         ) : ""}
       </div>
@@ -99,6 +105,7 @@ function App() {
         computerCards={computerCards}
         playerBetPlaced={playerBetPlaced}
         computerShouldCall={computerShouldCall}
+        computerChipsAfterFold={computerChipsAfterFold}
       />
     </div>
   );

@@ -8,7 +8,8 @@ const Slider = ({
     setPot,
     setPlayerBetPlaced,
     computerShouldCall,
-    computerChipsAfterCall
+    computerChipsAfterCall,
+    computerChipsAfterFold
 }) => {
     const [sliderValue, setSliderValue] = useState(50);
     const [max, setMax] = useState(99);
@@ -21,7 +22,9 @@ const Slider = ({
         alert(computerShouldCall() ? "Call": "Fold");
         if (computerShouldCall()) {
             computerChipsAfterCall(sliderValue);
-        };
+        } else {
+            computerChipsAfterFold(sliderValue);
+        }
     };
 
     return (
