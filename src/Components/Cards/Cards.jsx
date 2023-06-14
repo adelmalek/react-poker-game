@@ -10,8 +10,7 @@ const Cards = ({
     pot,
     computerCards,
     playerBetPlaced,
-    computerShouldCall,
-    setComputerChips
+    computerShouldCall
 }) => {
     return (
         <div className={isGame? "cards-component-container" : "not-visible"}>

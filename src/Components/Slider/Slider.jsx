@@ -9,12 +9,14 @@ const Slider = ({
     setPlayerBetPlaced,
     computerShouldCall,
     computerChipsAfterCall,
-    computerChipsAfterFold
+    computerChipsAfterFold,
+    getWinner
 }) => {
     const [sliderValue, setSliderValue] = useState(50);
     const [max, setMax] = useState(99);
 
     function handleBetClick() {
+        getWinner();
         setPlayerChips(playerChips - sliderValue);
         setPot(pot + sliderValue);
         setMax(max - sliderValue);

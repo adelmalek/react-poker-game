@@ -1,0 +1,14 @@
+.community-cards-container {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.community-cards {
+    display: flex;
+}
+
+.not-visible {
+    visibility: hidden;
+}

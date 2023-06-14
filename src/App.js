@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import Slider from "./Components/Slider/Slider";
 import Cards from "./Components/Cards/Cards";
+import CommunityCards from "./Components/CommunityCards/CommunityCards";
 
 function App() {
   const [deckId, setDeckId] = useState(null);
@@ -13,41 +14,66 @@ function App() {
   const [computerChips, setComputerChips] = useState(100);
   const [pot, setPot] = useState(0);
   const [playerBetPlaced, setPlayerBetPlaced] = useState(false);
-
+  const [communityCards, setCommunityCards] = useState([]);
+  const [winners, setWinners] = useState([]);
+  const [win, setWin] = useState("");
+  
   const API_KEY = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1";
   const DRAW_CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
 
   useEffect(() => {
-    shuffleCards()
+    getDeckId()
   }, []);
 
-  function shuffleCards() {
+  function getDeckId() {
     fetch(API_KEY)
       .then(res => res.json())
       .then(datas => setDeckId(datas.deck_id))
       .catch(error => console.log(error))
   };
 
-  function postBlinds() {
+  function initial() {
+    setIsGame(true);
+    setPlayerCards([]);
+    setComputerCards([]);
+    setCommunityCards([]);
+    setPlayerChips(99);
+    setComputerChips(98);
+    setPot(3);
+    setPlayerBetPlaced(false);
+    setWinners([]);
+    setWin("");
+  }
+
+  function cardsOfPlayer() {
     if (deckId === null) return;
     fetch(DRAW_CARDS)
       .then(res => res.json())
       .then(datas => setPlayerCards(datas.cards))
       .catch(error => console.log(error));
-    setIsGame(true);
-    setPlayerChips(99);
-    setComputerChips(98);
-    setPot(3);
-    setPlayerBetPlaced(false);
-    computerCardsAfterBet();
   };
 
-  function computerCardsAfterBet() {
+  function cardsOfComputer() {
     if (deckId === null) return;
     fetch(DRAW_CARDS)
       .then(res => res.json())
       .then(datas => setComputerCards(datas.cards))
       .catch(error => console.log(error));
+  };
+
+  function showdown() {
+    if (deckId === null) return;
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=5`)
+      .then(res => res.json())
+      .then(datas => setCommunityCards(datas.cards))
+      .catch(error => console.log(error));
+  };
+
+  function shuffleCards() {
+    initial();
+    cardsOfPlayer();
+    cardsOfComputer();
+    showdown();
   };
 
   function computerShouldCall() {
@@ -70,17 +96,76 @@ function App() {
   function computerChipsAfterCall(value) {
     value === 99 ? setComputerChips(0) : setComputerChips(computerChips - value);
     setPot(pot => pot + value);
+  }
+
+  function computerChipsAfterFold() {
+    setPlayerChips(playerChips + pot);
+    setPot(0)
   };
 
-  function computerChipsAfterFold(value) {
-    setPlayerChips(playerChips + pot + value);
-    setPot(0)
+  function cardsCodeToString(cards) {
+    return cards.map(card => card.code[0] === "0" ? "1" + card.code : card.code).toString();
+  };
+  
+  function getWinner() {
+    const community = cardsCodeToString(communityCards);
+    const player = cardsCodeToString(playerCards);
+    const computer = cardsCodeToString(computerCards);
+
+    fetch(`https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${community}&pc[]=${player}&pc[]=${computer}`)
+      .then(res => res.json())
+      .then(datas => {
+        if (datas.message === "Invalid cards") {
+          setWinners("DRAWs")
+        } else {
+          setWinners(datas.winners)
+        }
+      })
+      .catch(error => console.log(error))
+  };
+
+  function displayWinners() {
+    const player = cardsCodeToString(playerCards);
+    const computer = cardsCodeToString(computerCards);
+
+    const winner =  winners.map(winner => 
+      winner.cards === player ? "PLAYER" : 
+      winner.cards === computer? "COMPUTER" : 
+      winner === "DRAWS" ? "DRAWS" :
+      "")
+
+    winner.map(win => 
+        winnerIs(win),
+        setChips(win)
+    );
+  };
+
+  function winnerIs(winner) {
+    setWin(winner);
+  };
+
+  function setChips(win) {
+    if (win === "PLAYER") {
+      setPlayerChips(playerChips + pot);
+      setPot(0);
+    }
+    
+    if (win === "COMPUTER") {
+      setComputerChips(computerChips + pot)
+      setPot(0)
+    }
+
+    if (win === "DRAWS") {
+      setPlayerChips(100);
+      setComputerChips(100);
+      setPot(0);
+    }
   };
 
   return (
     <div className="App">
       <h1>P&#9824;ker</h1>
-      <button className="newgame-btn" onClick={() => postBlinds()}>New Game</button>
+      <button className="newgame-btn" onClick={() => shuffleCards()}>New Game</button>
       <div className="slider-container">
         {playerCards.length === 2 && playerChips > 0 && playerBetPlaced === false ? (
           <Slider
@@ -93,6 +178,7 @@ function App() {
             setComputerChips={setComputerChips}
             computerChipsAfterCall={computerChipsAfterCall}
             computerChipsAfterFold={computerChipsAfterFold}
+            getWinner={getWinner}
           />
         ) : ""}
       </div>
@@ -100,12 +186,20 @@ function App() {
         isGame={isGame}
         playerCards={playerCards}
         playerChips={playerChips} 
+        computerCards={computerCards}
         computerChips={computerChips} 
         pot={pot}
-        computerCards={computerCards}
         playerBetPlaced={playerBetPlaced}
         computerShouldCall={computerShouldCall}
         computerChipsAfterFold={computerChipsAfterFold}
+      />
+      <CommunityCards 
+        communityCards={communityCards}
+        playerBetPlaced={playerBetPlaced}
+        computerShouldCall={computerShouldCall}
+        winners={winners}
+        displayWinners={displayWinners}
+        win={win}
       />
     </div>
   );
