@@ -14,9 +14,7 @@ const Cards = ({
 }) => {
     return (
         <div className={isGame? "cards-component-container" : "not-visible"}>
-            <div className="pot-container">
-                <div>{`Pot: ${pot}`}</div>
-            </div>
+            <div className="pot-container">{`Pot: ${pot}`}</div>
             <div className="cards">
                 <div className="player-cards-container">
                     <div>{`Player Chips: ${playerChips}`}</div>

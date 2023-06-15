@@ -3,20 +3,25 @@
 }
 
 .cards-component-container {
-    width: 100vw;
     display: flex;
     flex-direction: column;
+    background-color: #06391c;
+    border: 10px double #603d36;
+    border-radius: 80px;
+    width: 872px;
+    height: 334px;
 }
 
 .pot-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    align-items: center;
+    margin: 10px 0 30px;
+    font-size: 20px;
 }
 
 .cards {
     display: flex;
-    justify-content: space-between;
 }
 
 .player-cards-container,
@@ -30,6 +35,17 @@
 .player-cards,
 .computer-cards {
     display: flex;
+    margin: 10px 0;
+}
+
+.player-cards img {
+    width: 150px;
+    height: 220px;
+}
+
+.computer-cards img {
+    width: 150px;
+    height: 220px;
 }
 
 

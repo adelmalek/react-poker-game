@@ -4,9 +4,13 @@
 
 .slide-container {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+}
+
+.slide-container p {
+  width: 100px;
+  margin-right: 10px;
 }
 
 .slider {
@@ -23,16 +27,16 @@
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%; 
     background: #f93a13;
     cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background: #f93a13;
     cursor: pointer;
@@ -56,11 +60,10 @@
   font-weight: 800;
   justify-content: center;
   line-height: 24px;
-  margin: 0;
-  min-height: 64px;
+  margin-left: 10px;
   outline: none;
   overflow: visible;
-  padding: 19px 26px;
+  padding: 12px 19px;
   pointer-events: auto;
   position: relative;
   text-align: center;

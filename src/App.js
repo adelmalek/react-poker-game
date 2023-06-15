@@ -114,13 +114,7 @@ function App() {
 
     fetch(`https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${community}&pc[]=${player}&pc[]=${computer}`)
       .then(res => res.json())
-      .then(datas => {
-        if (datas.message === "Invalid cards") {
-          setWinners("DRAWs")
-        } else {
-          setWinners(datas.winners)
-        }
-      })
+      .then(datas => setWinners(datas))
       .catch(error => console.log(error))
   };
 
@@ -128,16 +122,17 @@ function App() {
     const player = cardsCodeToString(playerCards);
     const computer = cardsCodeToString(computerCards);
 
-    const winner =  winners.map(winner => 
-      winner.cards === player ? "PLAYER" : 
-      winner.cards === computer? "COMPUTER" : 
-      winner === "DRAWS" ? "DRAWS" :
-      "")
+    console.log(player, computer, winners.winners)
+
+    /*const winner =  winners.map(winner => 
+      winner.winners.cards === player ? "PLAYER" : 
+      winner.winners.cards === computer? "COMPUTER" : 
+      "DRAWS")
 
     winner.map(win => 
         winnerIs(win),
         setChips(win)
-    );
+    );*/
   };
 
   function winnerIs(winner) {

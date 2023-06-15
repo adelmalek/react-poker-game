@@ -1,5 +1,4 @@
 import "./CommunityCards.css";
-import { useState } from "react";
 
 const CommunityCards = ({ 
     communityCards, 
@@ -9,14 +8,14 @@ const CommunityCards = ({
     displayWinners,
     win
 }) => {
-    if (playerBetPlaced && computerShouldCall() && winners) {
+    if (playerBetPlaced && computerShouldCall() && typeof winners !== "undefined") {
         displayWinners();
     };
 
     return (
         <div className={playerBetPlaced && computerShouldCall() ? 
             "community-cards-container" : "not-visible"}>
-            <h3>The winner is: {win}</h3>
+            <p>The winner is: {win}</p>
             <div className="community-cards">
                 {communityCards.map(card => 
                     <div key={card.code}>

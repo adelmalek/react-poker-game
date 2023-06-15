@@ -30,19 +30,17 @@ const Slider = ({
     };
 
     return (
-        <div className="bet-container">
-            <div className="slide-container">
-                <input 
-                    type="range" 
-                    min="1" 
-                    max={max}
-                    className="slider"
-                    onChange={(e) => setSliderValue(e.target.valueAsNumber)} 
-                />
-                <p>Value: {sliderValue}</p>
-                <button className="bet-btn" onClick={handleBetClick}>Bet</button>
-            </div>
-      </div>
+        <div className="slide-container">
+            <p>Value: {sliderValue}</p>
+            <input 
+                type="range" 
+                min="1" 
+                max={max}
+                className="slider"
+                onChange={(e) => setSliderValue(e.target.valueAsNumber)} 
+            />
+            <button className="bet-btn" onClick={handleBetClick}>Bet</button>
+        </div>
     )
 };
 
