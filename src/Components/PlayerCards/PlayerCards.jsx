@@ -3,11 +3,12 @@ import './PlayerCards.css';
 
 const PlayerCards = ({
     playerCards, 
-    /*playerChips*/
+    playerChips
 }) => {
     return(
         <div className="player-cards">
-            <p>Player Chips: {/*playerChips*/}</p>
+            <p>Player Chips: {playerChips}</p>
+            <p>Player Action: Call</p>
             <div className="player-cards-img">
                 {playerCards.map(card => 
                     <div key={card.code}>

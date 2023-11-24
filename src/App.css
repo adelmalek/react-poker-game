@@ -84,7 +84,7 @@
 
 .cards-container {
   width: 800px;
-  height: 237px;
+  height: 260px;
   display: flex;
   border: 8px groove rgba(0, 0, 255, 0.658);
   border-radius: 20px;

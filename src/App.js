@@ -6,7 +6,12 @@ import PlayerCards from "./Components/PlayerCards/PlayerCards";
 function App() {
   const [deckId, setDeckId] = useState(null);
   const [playerCards, setPlayerCards] = useState([]);
+  const [playerChips, setPlayerChips] = useState(100);
+  const [playerStatus, setPlayerStatus] = useState("Call");
   const [computerCards, setComputerCards] = useState([]);
+  const [computerChips, setComputerChips] = useState(100);
+  const [computerStatus, setComputerStatus] = useState("Call");
+  const [pot, setPot] = useState(0);
 
   const API_KEY = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
   const CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
@@ -54,10 +59,17 @@ function App() {
         </div>
       </header>
       <section className="sections">
-        <div className="section-player">
+        <div className="section-1">
+          <div className="pot-container">
+            <div className="pot">Pot: {pot}</div>
+          </div>
+        </div>
+        <div className="section-2">
           <div className="cards-container">
             <PlayerCards 
               playerCards={playerCards}
+              playerChips={playerChips}
+              playerStatus={playerStatus}
             />
           </div>
         </div>
