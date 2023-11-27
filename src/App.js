@@ -43,6 +43,7 @@ function App() {
   function newGame() {
     initialState();
     cardsOfPlayer();
+    postBlinds();
   };
 
   function cardsOfPlayer() {
@@ -63,8 +64,14 @@ function App() {
       .catch(error => console.log(error))
   };
 
+  function postBlinds() {
+    setPlayerChips(playerChips => playerChips - 1);
+    setComputerChips(computerChips => computerChips - 2);
+    setPot(pot => pot + 3);
+  };
+
   function displaySlider() {
-    return pot === 0 && playerChips === 100;
+    return pot === 3 && playerChips === 99;
   };
 
   return (
@@ -101,6 +108,9 @@ function App() {
               playerChips={playerChips}
               playerStatus={playerStatus}
             />
+          </div>
+          <div>
+            {computerChips}
           </div>
         </section>
 
