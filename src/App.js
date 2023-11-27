@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 
 import PlayerCards from "./Components/PlayerCards/PlayerCards";
+import Slider from "./Components/Slider/Slider";
 
 function App() {
   const [deckId, setDeckId] = useState(null);
@@ -12,12 +13,24 @@ function App() {
   const [computerChips, setComputerChips] = useState(100);
   const [computerStatus, setComputerStatus] = useState("Call");
   const [pot, setPot] = useState(0);
+  const [sliderValue, setSliderValue] = useState(1);
 
   const API_KEY = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
   const CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
 
+  function initialState() {
+    setPlayerCards([]);
+    setPlayerChips(100);
+    setPlayerStatus("Call");
+    setComputerCards([]);
+    setComputerChips(100);
+    setComputerStatus("Call");
+    setPot(0);
+    setSliderValue(1);
+  }
+
   useEffect(() => {
-    startGame()
+    startGame();
   }, []);
 
   function startGame () {
@@ -28,6 +41,7 @@ function App() {
   };
 
   function newGame() {
+    initialState();
     cardsOfPlayer();
   };
 
@@ -49,6 +63,10 @@ function App() {
       .catch(error => console.log(error))
   };
 
+  function displaySlider() {
+    return pot === 0 && playerChips === 100;
+  };
+
   return (
     <div className="App">
       <header className="header">
@@ -59,12 +77,24 @@ function App() {
         </div>
       </header>
       <section className="sections">
-        <div className="section-1">
+
+        <section className="section-1">
           <div className="pot-container">
             <div className="pot">Pot: {pot}</div>
           </div>
-        </div>
-        <div className="section-2">
+          <div className={displaySlider()? "slider-container" : "not-visible"}>
+            <Slider 
+              sliderValue={sliderValue} 
+              setSliderValue={setSliderValue}
+              playerChips={playerChips}
+              setPlayerChips={setPlayerChips}
+              pot={pot}
+              setPot={setPot}
+            />
+          </div>
+        </section>
+
+        <section className="section-2">
           <div className="cards-container">
             <PlayerCards 
               playerCards={playerCards}
@@ -72,7 +102,8 @@ function App() {
               playerStatus={playerStatus}
             />
           </div>
-        </div>
+        </section>
+
       </section>
     </div>
   );

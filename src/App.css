@@ -82,6 +82,19 @@
   align-items: center;
 }
 
+.pot-container {
+  width: 450px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(87,111,230);
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+
 .cards-container {
   width: 800px;
   height: 260px;
