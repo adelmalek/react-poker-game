@@ -3,14 +3,29 @@ import './Slider.css';
 const Slider = ({
     sliderValue,
     setSliderValue,
+    pot,
+    setPot,
     playerChips,
     setPlayerChips,
-    pot,
-    setPot
+    setPlayerBetPlaced,
+    computerChips,
+    setComputerChips,
+    setComputerStatus,
+    computerShouldCall
 }) => {
     function bet() {
+        setPlayerBetPlaced(true);
         setPlayerChips(playerChips - sliderValue);
         setPot(pot + sliderValue);
+        if (pot === 3 && sliderValue === 1) {
+            setComputerStatus("Check");
+        } else if (computerShouldCall()) {
+            setComputerStatus("Call");
+            setComputerChips(computerChips => computerChips - sliderValue + 1);
+            setPot(pot => pot + sliderValue - 1);
+        } else {
+            setComputerStatus("Fold")
+        }
     };
 
     return (

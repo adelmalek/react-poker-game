@@ -10,6 +10,7 @@ function App() {
   const [playerCards, setPlayerCards] = useState([]);
   const [playerChips, setPlayerChips] = useState(100);
   const [playerStatus, setPlayerStatus] = useState("Call");
+  const [playerBetPlaced, setPlayerBetPlaced] = useState(false);
   const [computerCards, setComputerCards] = useState([]);
   const [computerChips, setComputerChips] = useState(100);
   const [computerStatus, setComputerStatus] = useState("Call");
@@ -23,6 +24,7 @@ function App() {
     setPlayerCards([]);
     setPlayerChips(100);
     setPlayerStatus("Call");
+    setPlayerBetPlaced(false);
     setComputerCards([]);
     setComputerChips(100);
     setComputerStatus("Call");
@@ -73,7 +75,24 @@ function App() {
   };
 
   function displaySlider() {
-    return pot === 3 && playerChips === 99;
+    return (pot === 3 && playerChips === 99) || playerBetPlaced === false;
+  };
+
+  function computerShouldCall() {
+    if (computerChips === 0) return true;
+    
+    const card1Value = computerCards[0].code[0];
+    const card2Value = computerCards[1].code[0];
+    const card1Suit = computerCards[0].code[1];
+    const card2Suit = computerCards[1].code[1];
+
+    return card1Value === card2Value || 
+           ["0", "J", "Q", "K", "A"].includes(card1Value) ||
+           ["0", "J", "Q", "K", "A"].includes(card2Value) ||
+           (
+              card1Suit === card2Suit && 
+              Math.abs(Number(card1Value) - Number(card2Value)) <= 2
+           );
   };
 
   return (
@@ -95,10 +114,15 @@ function App() {
             <Slider 
               sliderValue={sliderValue} 
               setSliderValue={setSliderValue}
-              playerChips={playerChips}
-              setPlayerChips={setPlayerChips}
               pot={pot}
               setPot={setPot}
+              playerChips={playerChips}
+              setPlayerChips={setPlayerChips}
+              setPlayerBetPlaced={setPlayerBetPlaced}
+              computerChips={computerChips}
+              setComputerChips={setComputerChips}
+              setComputerStatus={setComputerStatus}
+              computerShouldCall={computerShouldCall}
             />
           </div>
         </section>
