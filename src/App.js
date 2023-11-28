@@ -1,8 +1,9 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 
-import PlayerCards from "./Components/PlayerCards/PlayerCards";
 import Slider from "./Components/Slider/Slider";
+import PlayerCards from "./Components/PlayerCards/PlayerCards";
+import ComputerCards from "./Components/ComputerCards/ComputerCards";
 
 function App() {
   const [deckId, setDeckId] = useState(null);
@@ -43,6 +44,7 @@ function App() {
   function newGame() {
     initialState();
     cardsOfPlayer();
+    cardsOfComputer();
     postBlinds();
   };
 
@@ -108,9 +110,11 @@ function App() {
               playerChips={playerChips}
               playerStatus={playerStatus}
             />
-          </div>
-          <div>
-            {computerChips}
+            <ComputerCards 
+              computerCards={computerCards}
+              computerChips={computerChips}
+              computerStatus={computerStatus}
+            />
           </div>
         </section>
 
