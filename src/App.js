@@ -19,6 +19,8 @@ function App() {
   const [sliderValue, setSliderValue] = useState(1);
   const [isGame, setIsGame] = useState(false);
   const [communityCards, setCommunityCards] = useState([]);
+  const [winner, setWinner] = useState(null);
+  const [showWinner, setShowWinner] = useState(null);
 
   const API_KEY = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
   const CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
@@ -35,6 +37,8 @@ function App() {
     setSliderValue(1);
     setIsGame(true);
     setCommunityCards([]);
+    setWinner(null);
+    setShowWinner(null);
   }
 
   useEffect(() => {
@@ -110,6 +114,46 @@ function App() {
       .catch(error => console.log(error));
   };
 
+  function cardsCodeToString(cards) {
+    return cards.map(card => card.code[0] === "0" ? "1" + card.code : card.code).toString();
+  };
+
+  function getWinner() {
+    const community = cardsCodeToString(communityCards);
+    const player = cardsCodeToString(playerCards);
+    const computer = cardsCodeToString(computerCards);
+
+    fetch(`https://api.pokerapi.dev/v1/winner/texas_holdem?cc=${community}&pc[]=${player}&pc[]=${computer}`)
+      .then(res => res.json())
+      .then(datas => setWinner(datas.winners))
+      .catch(error => console.log(error))
+  };
+
+  function displayWinner() {
+    /*if ((computerStatus === "Fold") || (playerBetPlaced === false)) return;*/
+
+    const player = cardsCodeToString(playerCards);
+    const computer = cardsCodeToString(computerCards);
+    
+    if (winner === undefined) {
+      console.log("draw");
+      setShowWinner("DRAW");
+      setPlayerChips(playerChips + (pot / 2));
+      setComputerChips(computerChips + (pot / 2));
+      setPot(0);
+    } else if (winner[0].cards === player) {
+      console.log("player");
+      setShowWinner("PLAYER");
+      setPlayerChips(playerChips + pot);
+      setPot(0);
+    } else if (winner[0].cards === computer) {
+      console.log("computer");
+      setShowWinner("COMPUTER")
+      setComputerChips(computerChips + pot);
+      setPot(0);
+    }
+  };
+
   return (
     <div className="App">
 
@@ -141,7 +185,12 @@ function App() {
               setComputerChips={setComputerChips}
               setComputerStatus={setComputerStatus}
               computerShouldCall={computerShouldCall}
+              getWinner={getWinner}
             />
+          </div>
+          <div className="win-container">
+            <button className="glow-on-hover" onClick={displayWinner}>The Winner Is: </button>
+            <p className="win">{showWinner}</p>
           </div>
 
         </section>
