@@ -1,0 +1,13 @@
+.community-cards-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+}
+
+.community-cards-container img {
+    width: 130px;
+    height: 180px;
+    border-radius: 10px;
+    border: 1px solid lightgrey;
+}

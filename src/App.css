@@ -13,6 +13,10 @@
   margin: 10px;
 }
 
+.not-visible {
+  visibility: hidden;
+}
+
 .glow-on-hover {
   width: 220px;
   height: 50px;

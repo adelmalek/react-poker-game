@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Slider from "./Components/Slider/Slider";
 import PlayerCards from "./Components/PlayerCards/PlayerCards";
 import ComputerCards from "./Components/ComputerCards/ComputerCards";
+import CommunityCards from './Components/CommunityCards/CommunityCards';
 
 function App() {
   const [deckId, setDeckId] = useState(null);
@@ -13,9 +14,11 @@ function App() {
   const [playerBetPlaced, setPlayerBetPlaced] = useState(false);
   const [computerCards, setComputerCards] = useState([]);
   const [computerChips, setComputerChips] = useState(100);
-  const [computerStatus, setComputerStatus] = useState("Call");
+  const [computerStatus, setComputerStatus] = useState(null);
   const [pot, setPot] = useState(0);
   const [sliderValue, setSliderValue] = useState(1);
+  const [isGame, setIsGame] = useState(false);
+  const [communityCards, setCommunityCards] = useState([]);
 
   const API_KEY = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
   const CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
@@ -27,9 +30,11 @@ function App() {
     setPlayerBetPlaced(false);
     setComputerCards([]);
     setComputerChips(100);
-    setComputerStatus("Call");
+    setComputerStatus(null);
     setPot(0);
     setSliderValue(1);
+    setIsGame(true);
+    setCommunityCards([]);
   }
 
   useEffect(() => {
@@ -48,6 +53,7 @@ function App() {
     cardsOfPlayer();
     cardsOfComputer();
     postBlinds();
+    showdown();
   };
 
   function cardsOfPlayer() {
@@ -95,8 +101,18 @@ function App() {
            );
   };
 
+  function showdown() {
+    if (deckId === null) return;
+
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=5`)
+      .then(res => res.json())
+      .then(datas => setCommunityCards(datas.cards))
+      .catch(error => console.log(error));
+  };
+
   return (
     <div className="App">
+
       <header className="header">
         <h1>P&#9824;ker</h1>
         <div>
@@ -104,9 +120,11 @@ function App() {
           <button className="glow-on-hover">New Hand</button>
         </div>
       </header>
-      <section className="sections">
+
+      <section className={isGame? "sections" : "not-visible"}>
 
         <section className="section-1">
+
           <div className="pot-container">
             <div className="pot">Pot: {pot}</div>
           </div>
@@ -125,9 +143,11 @@ function App() {
               computerShouldCall={computerShouldCall}
             />
           </div>
+
         </section>
 
         <section className="section-2">
+
           <div className="cards-container">
             <PlayerCards 
               playerCards={playerCards}
@@ -140,6 +160,11 @@ function App() {
               computerStatus={computerStatus}
             />
           </div>
+
+          <div className="cards-container">
+            <CommunityCards communityCards={communityCards} />
+          </div>
+
         </section>
 
       </section>
