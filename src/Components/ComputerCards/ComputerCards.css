@@ -9,12 +9,13 @@
 }
 
 .computer-cards p {
-    margin-bottom: 10px;
+    font-size: 15px;
+    margin-bottom: 8px;
 }
 
 .computer-cards-img img {
-    width: 130px;
-    height: 180px;
+    width: 105px;
+    height: 140px;
     border-radius: 10px;
     border: 1px solid lightgrey;
 }
@@ -23,7 +24,7 @@
     display: flex;
 }
 
-.not-visible {
+.computer-cards-not-visible {
     width: 340px;
     height: 253px;
     margin: 0 10px;

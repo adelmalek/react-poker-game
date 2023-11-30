@@ -12,6 +12,7 @@ const Slider = ({
     setComputerChips,
     setComputerStatus,
     computerShouldCall,
+    setDisplayCommunityCards,
     getWinner
 }) => {
     function bet() {
@@ -31,13 +32,28 @@ const Slider = ({
     };
 
     function computerCheck() {
-        setComputerStatus("Check");
+        setTimeout(() => {
+            setComputerStatus("Check");
+        }, 1000)
+
+        setTimeout(() => {
+            setDisplayCommunityCards(true);
+        }, 300)
     };
 
     function computerCall() {
-        setComputerStatus("Call");
-        setComputerChips(computerChips - sliderValue + 1);
-        setPot(pot => pot + sliderValue - 1);
+        setTimeout(() => {
+            setComputerChips(computerChips - sliderValue + 1);
+            setPot(pot => pot + sliderValue - 1);
+        }, 1000);
+
+        setTimeout(() => {
+            setComputerStatus("Call");
+        }, 2000)
+
+        setTimeout(() => {
+            setDisplayCommunityCards(true);
+        }, 3000)
     };
 
     function computerFold() {

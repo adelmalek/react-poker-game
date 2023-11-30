@@ -8,6 +8,7 @@ import CommunityCards from './Components/CommunityCards/CommunityCards';
 
 function App() {
   const [deckId, setDeckId] = useState(null);
+  const [isGame, setIsGame] = useState(false);
   const [playerCards, setPlayerCards] = useState([]);
   const [playerChips, setPlayerChips] = useState(100);
   const [playerStatus, setPlayerStatus] = useState("Call");
@@ -15,10 +16,10 @@ function App() {
   const [computerCards, setComputerCards] = useState([]);
   const [computerChips, setComputerChips] = useState(100);
   const [computerStatus, setComputerStatus] = useState(null);
+  const [communityCards, setCommunityCards] = useState([]);
+  const [displayCommunityCards, setDisplayCommunityCards] = useState(false);
   const [pot, setPot] = useState(0);
   const [sliderValue, setSliderValue] = useState(1);
-  const [isGame, setIsGame] = useState(false);
-  const [communityCards, setCommunityCards] = useState([]);
   const [winner, setWinner] = useState(null);
   const [showWinner, setShowWinner] = useState(null);
 
@@ -26,6 +27,7 @@ function App() {
   const CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
 
   function initialState() {
+    setIsGame(true);
     setPlayerCards([]);
     setPlayerChips(100);
     setPlayerStatus("Call");
@@ -33,10 +35,10 @@ function App() {
     setComputerCards([]);
     setComputerChips(100);
     setComputerStatus(null);
+    setCommunityCards([]);
+    setDisplayCommunityCards(false);
     setPot(0);
     setSliderValue(1);
-    setIsGame(true);
-    setCommunityCards([]);
     setWinner(null);
     setShowWinner(null);
   }
@@ -78,6 +80,15 @@ function App() {
       .catch(error => console.log(error))
   };
 
+  function showdown() {
+    if (deckId === null) return;
+
+    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=5`)
+      .then(res => res.json())
+      .then(datas => setCommunityCards(datas.cards))
+      .catch(error => console.log(error));
+  };
+
   function postBlinds() {
     setPlayerChips(playerChips => playerChips - 1);
     setComputerChips(computerChips => computerChips - 2);
@@ -103,15 +114,6 @@ function App() {
               card1Suit === card2Suit && 
               Math.abs(Number(card1Value) - Number(card2Value)) <= 2
            );
-  };
-
-  function showdown() {
-    if (deckId === null) return;
-
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=5`)
-      .then(res => res.json())
-      .then(datas => setCommunityCards(datas.cards))
-      .catch(error => console.log(error));
   };
 
   function cardsCodeToString(cards) {
@@ -172,7 +174,7 @@ function App() {
           <div className="pot-container">
             <div className="pot">Pot: {pot}</div>
           </div>
-          <div className={displaySlider()? "slider-container" : "not-visible"}>
+          <div className={displaySlider()? "slider-container" : "slider-not-visible"}>
             <Slider 
               sliderValue={sliderValue} 
               setSliderValue={setSliderValue}
@@ -185,11 +187,12 @@ function App() {
               setComputerChips={setComputerChips}
               setComputerStatus={setComputerStatus}
               computerShouldCall={computerShouldCall}
+              setDisplayCommunityCards={setDisplayCommunityCards}
               getWinner={getWinner}
             />
           </div>
           <div className="win-container">
-            <button className="glow-on-hover" onClick={displayWinner}>The Winner Is: </button>
+            <button className="glow-on-hover" onClick={displayWinner}>The Winner Is:</button>
             <p className="win">{showWinner}</p>
           </div>
 
@@ -211,7 +214,10 @@ function App() {
           </div>
 
           <div className="cards-container">
-            <CommunityCards communityCards={communityCards} />
+            <CommunityCards 
+              communityCards={communityCards}
+              displayCommunityCards={displayCommunityCards}
+            />
           </div>
 
         </section>

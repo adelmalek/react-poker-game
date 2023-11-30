@@ -110,9 +110,13 @@
   box-shadow: rgb(87,111,230) 0px 20px 40px -7px;
 }
 
+.win-container button {
+  width: 180px;
+}
+
 .cards-container {
-  width: 800px;
-  height: 260px;
+  width: 700px;
+  height: 210px;
   display: flex;
   border: 8px groove rgba(0, 0, 255, 0.658);
   border-radius: 20px;

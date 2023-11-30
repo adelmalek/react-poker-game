@@ -9,12 +9,13 @@
 }
 
 .player-cards p {
-    margin-bottom: 10px;
+    font-size: 15px;
+    margin-bottom: 8px;
 }
 
 .player-cards img {
-    width: 130px;
-    height: 180px;
+    width: 105px;
+    height: 140px;
     border-radius: 10px;
     border: 1px solid lightgrey;
 }

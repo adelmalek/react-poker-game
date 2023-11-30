@@ -130,6 +130,6 @@ input[type=range]::-moz-range-thumb:active {
     font-size: 14px;
 }
 
-.not-visible {
+.slider-not-visible {
     visibility: hidden;
 }
