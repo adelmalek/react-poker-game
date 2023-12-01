@@ -14,7 +14,7 @@ function App() {
   const [playerStatus, setPlayerStatus] = useState("Call");
   const [playerBetPlaced, setPlayerBetPlaced] = useState(false);
   const [computerCards, setComputerCards] = useState([]);
-  const [computerChips, setComputerChips] = useState(100);
+  const [computerChips, setComputerChips] = useState(50);
   const [computerStatus, setComputerStatus] = useState(null);
   const [communityCards, setCommunityCards] = useState([]);
   const [displayCommunityCards, setDisplayCommunityCards] = useState(false);
@@ -33,7 +33,7 @@ function App() {
     setPlayerStatus("Call");
     setPlayerBetPlaced(false);
     setComputerCards([]);
-    setComputerChips(100);
+    setComputerChips(50);
     setComputerStatus(null);
     setCommunityCards([]);
     setDisplayCommunityCards(false);

@@ -24,7 +24,11 @@ const Slider = ({
             computerCheck();
             getWinner();
         } else if (computerShouldCall()) {
-            computerCall();
+            if (sliderValue > computerChips) {
+                computerChipsIsSmaller();
+            } else {
+                computerCall();
+            }
             getWinner();
         } else {
             computerFold();
@@ -39,6 +43,23 @@ const Slider = ({
         setTimeout(() => {
             setDisplayCommunityCards(true);
         }, 300)
+    };
+
+    function computerChipsIsSmaller() {
+        setTimeout(() => {
+            let chipsToReturn = (sliderValue + 1) - (computerChips + 2);
+            setPlayerChips(playerChips => playerChips + chipsToReturn);
+            setComputerChips(0);
+            setPot(pot => pot + computerChips - chipsToReturn);
+        }, 1000)
+        
+        setTimeout(() => {
+            setComputerStatus("Call");
+        }, 2000)
+
+        setTimeout(() => {
+            setDisplayCommunityCards(true);
+        }, 3000)
     };
 
     function computerCall() {
