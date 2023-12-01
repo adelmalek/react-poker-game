@@ -14,7 +14,7 @@ function App() {
   const [playerStatus, setPlayerStatus] = useState("Call");
   const [playerBetPlaced, setPlayerBetPlaced] = useState(false);
   const [computerCards, setComputerCards] = useState([]);
-  const [computerChips, setComputerChips] = useState(50);
+  const [computerChips, setComputerChips] = useState(100);
   const [computerStatus, setComputerStatus] = useState(null);
   const [communityCards, setCommunityCards] = useState([]);
   const [displayCommunityCards, setDisplayCommunityCards] = useState(false);
@@ -26,14 +26,19 @@ function App() {
   const API_KEY = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
   const CARDS = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
 
+  function initialGame() {
+    setPlayerChips(100);
+    setComputerChips(100);
+
+    initialState();
+  };
+
   function initialState() {
     setIsGame(true);
     setPlayerCards([]);
-    setPlayerChips(100);
     setPlayerStatus("Call");
     setPlayerBetPlaced(false);
-    setComputerCards([]);
-    setComputerChips(50);
+    setComputerCards([]);   
     setComputerStatus(null);
     setCommunityCards([]);
     setDisplayCommunityCards(false);
@@ -41,7 +46,7 @@ function App() {
     setSliderValue(1);
     setWinner(null);
     setShowWinner(null);
-  }
+  };
 
   useEffect(() => {
     startGame();
@@ -55,7 +60,7 @@ function App() {
   };
 
   function newGame() {
-    initialState();
+    initialGame();
     cardsOfPlayer();
     cardsOfComputer();
     postBlinds();
@@ -132,27 +137,39 @@ function App() {
   };
 
   function displayWinner() {
-    /*if ((computerStatus === "Fold") || (playerBetPlaced === false)) return;*/
+    if ((computerStatus === "Fold") || (playerBetPlaced === false)) return;
 
     const player = cardsCodeToString(playerCards);
     const computer = cardsCodeToString(computerCards);
     
     if (winner === undefined) {
-      console.log("draw");
       setShowWinner("DRAW");
       setPlayerChips(playerChips + (pot / 2));
       setComputerChips(computerChips + (pot / 2));
       setPot(0);
     } else if (winner[0].cards === player) {
-      console.log("player");
       setShowWinner("PLAYER");
       setPlayerChips(playerChips + pot);
       setPot(0);
     } else if (winner[0].cards === computer) {
-      console.log("computer");
       setShowWinner("COMPUTER")
       setComputerChips(computerChips + pot);
       setPot(0);
+    }
+  };
+
+  function newHand() {
+    if ( (showWinner === "DRAW" ||
+          showWinner === "PLAYER" ||
+          showWinner === "COMPUTER" ||
+          computerStatus === "Fold")  &&
+         (computerChips > 0 && playerChips > 0)
+    ) {
+      initialState();
+      cardsOfPlayer();
+      cardsOfComputer();
+      postBlinds();
+      showdown();
     }
   };
 
@@ -163,7 +180,7 @@ function App() {
         <h1>P&#9824;ker</h1>
         <div>
           <button className="glow-on-hover"  onClick={newGame}>New Game</button>
-          <button className="glow-on-hover">New Hand</button>
+          <button className="glow-on-hover"  onClick={newHand}>New Hand</button>
         </div>
       </header>
 
