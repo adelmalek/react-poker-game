@@ -66,7 +66,7 @@ function App() {
     postBlinds();
     showdown();
 
-    if (computerChips === 0 || computerChips === 1) {
+    if (computerChips === 0 || computerChips === 1 || playerChips === 0 || playerChips === 1) {
       setTimeout(() => {
         getWinner();
       }, 1000)
@@ -102,7 +102,10 @@ function App() {
 
   function postBlinds() {
     setPlayerChips(playerChips => playerChips - 1);
-    if (computerChips === 1 || computerChips === 0) {
+    if (computerChips === 1 || 
+        computerChips === 0 || 
+        playerChips === 1 || 
+        playerChips === 0) {
       setComputerChips(computerChips => computerChips - 1);
       setPot(pot => pot + 2)
       setComputerStatus("Check");
@@ -112,6 +115,8 @@ function App() {
       setComputerChips(computerChips => computerChips - 2);
       setPot(pot => pot + 3);
     }
+
+    console.log(pot, playerChips)
   };
 
   function displaySlider() {
