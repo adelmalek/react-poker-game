@@ -65,6 +65,12 @@ function App() {
     cardsOfComputer();
     postBlinds();
     showdown();
+
+    if (computerChips === 0 || computerChips === 1) {
+      setTimeout(() => {
+        getWinner();
+      }, 1000)
+    }
   };
 
   function cardsOfPlayer() {
@@ -96,12 +102,24 @@ function App() {
 
   function postBlinds() {
     setPlayerChips(playerChips => playerChips - 1);
-    setComputerChips(computerChips => computerChips - 2);
-    setPot(pot => pot + 3);
+    if (computerChips === 1 || computerChips === 0) {
+      setComputerChips(computerChips => computerChips - 1);
+      setPot(pot => pot + 2)
+      setComputerStatus("Check");
+      setPlayerBetPlaced(true);
+      setDisplayCommunityCards(true);
+    } else {
+      setComputerChips(computerChips => computerChips - 2);
+      setPot(pot => pot + 3);
+    }
   };
 
   function displaySlider() {
-    return (pot === 3 && playerChips === 99) || playerBetPlaced === false;
+    if ((pot === 3 && playerChips === 99) || playerBetPlaced === false) {
+      return true;
+    }
+
+    return false;
   };
 
   function computerShouldCall() {
@@ -139,6 +157,10 @@ function App() {
   function displayWinner() {
     if ((computerStatus === "Fold") || (playerBetPlaced === false)) return;
 
+    if (pot === 0 || pot === 2) {
+      getWinner();
+    }
+
     const player = cardsCodeToString(playerCards);
     const computer = cardsCodeToString(computerCards);
     
@@ -170,6 +192,12 @@ function App() {
       cardsOfComputer();
       postBlinds();
       showdown();
+    }
+
+    if (computerChips === 0 || computerChips === 1) {
+      setTimeout(() => {
+        getWinner();
+      }, 1000)
     }
   };
 
